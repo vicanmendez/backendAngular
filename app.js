@@ -18,6 +18,15 @@ app.use(bodyParser.json());
 
 
 //CORS
+// Configurar cabeceras para permitir el acceso cruzado entre dominios, y así hacer efectivo el backend para peticiones AJAX
+//Esto también es un middleware, que se va a ejecutar antes de cada petición contra nuestro backend
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+    res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
+    next();
+});
 
 /*
 //rutas (aquí van las rutas por las que responderá nuestro backend)

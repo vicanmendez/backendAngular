@@ -8,6 +8,9 @@ las cuales a su vez devuelven mensajes en formato JSON
 //Importamos el modelo 
 var projectModelo = require('../models/project');
 
+//Importamos librería fs, necesaria para el manejo y eliminación de archivos
+var fs = require("fs");
+
 var controller = {
 
 	home: function(req, res) {
@@ -150,7 +153,12 @@ var controller = {
 			filename = fileSplit[1];
 			//Se supone que el middleware ya subió el archivo, así que si todo fue bien, subimos a la BD
 
-			projectModelo.findByIdAndUpdate(condition, {image: filename}, {new: true}, (err, projectUpdated) => {
+			//Controlamos que la extensión sea la correcta
+			var extSplit = filename.split("\.");
+			var ext = extSplit[1];
+			console.log("Extensión de la imagen a subir: "+ext);
+			if(ext == "png" || ext == "jpg" || ext=="JPG" || ext=="gif" || ext=="jpeg") {
+				projectModelo.findByIdAndUpdate(condition, {image: filename}, {new: true}, (err, projectUpdated) => {
 				if(err) {
 					return res.status(500).send({message: "No se pudo subir el archivo"});
 				} 
@@ -162,7 +170,15 @@ var controller = {
 				
 
 			});
+			} else { //extensión incompatible
+				//borramos fichero
+				fs.unlink(filePath, (err) => {
+					return res.status(200).send({message: "La extensión no es compatible (se esperaba jpg, jpeg, png o gif"});
 
+				});
+			}
+			
+		//Si no hay archivo, devolvemos mensaje indicando que no fue subida la imagen
 		} else {
 			return res.status(200).send({message: filename});
 		}
