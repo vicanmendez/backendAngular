@@ -27,5 +27,6 @@ router.put('/update/:id', ProjectController.updateProject);
 router.delete('/delete/:id?', ProjectController.deleteProject);
 //El método por POST que subirá una imagen recibe como 2do parámetro el multipartMiddleware para poder procesar la imagen en req.files
 router.post('/upload-image/:id', multipartMiddleware, ProjectController.uploadImage);
-
+//Método para devolver una imagen a través de AJAX
+router.get('/get-image/:image', ProjectController.getImageFile);
 module.exports = router;

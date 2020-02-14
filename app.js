@@ -28,6 +28,7 @@ app.use((req, res, next) => {
     next();
 });
 
+
 /*
 //rutas (aquí van las rutas por las que responderá nuestro backend)
 app.get('/', (req, res) => {
